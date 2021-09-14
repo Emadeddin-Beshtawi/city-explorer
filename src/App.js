@@ -12,6 +12,9 @@ import SearchForm from "./component/SearchForm";
 ///// We need to import supported Location Component ////////
 import Location from "./component/Location";
 
+///// We need to import supported ErrorAlert Component ////////
+import ErrorAlert from "./component/ErrorAlert";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,9 +25,9 @@ class App extends Component {
       map: "",
       weatherData: [],
       showData: false,
+      showError: false,
     };
   }
-
   /////// handle-location function ///////////
 
   handleLocation = (z) => {
@@ -33,51 +36,58 @@ class App extends Component {
       display_name: display_name,
     });
   };
-
   /////// handle-submit function ///////////
 
   handleSubmit = (z) => {
-    console.log(`${process.env.REACT_APP_LOCATIONIQ_API_KEY}`);
     z.preventDefault();
-    const config = {
-      method: "GET",
-      baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}`,
-    };
-
-    /////The then() method in JavaScript has been defined in the Promise API and is used to deal with asynchronous tasks such as an API call.//////
-
-    ////Axios is a promise based HTTP client for the browser and Node.js.////
-
-    axios(config)
-      .then((y) => {
-        const responseData = y.data[0];
-        this.setState({
-          display_name: responseData.display_name,
-          lat: responseData.lat,
-          lon: responseData.lon,
-
-          map: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${responseData.lat},${responseData.lon}&zoom=1-18`,
-
-          showData: true,
-        });
-      })
-      .then(() => {
-        axios
-          .get(
-            `http://${process.env.REACT_APP_BACKEND_URL}/weather-data?lat=${this.state.lat}&lon=${this.state.lon}`
-          )
-          .then((y) => {
-            console.log(y.data);
-            this.setState({
-              weatherData: y.data,
-            });
-          });
+    if (this.state.display_name === "") {
+      this.setState({
+        showError: true,
       });
+    } else {
+      let config = {
+        method: "GET",
+        baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.display_name}&format=json`,
+      };
+
+      /////The then() method in JavaScript has been defined in the Promise API and is used to deal with asynchronous tasks such as an API call.//////
+
+      ////Axios is a promise based HTTP client for the browser and Node.js.////
+
+      axios(config)
+        .then((y) => {
+          let responseData = y.data[0];
+          this.setState({
+            display_name: responseData.display_name,
+            lon: responseData.lon,
+            lat: responseData.lat,
+            map: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${responseData.lat},${responseData.lon}&zoom=1-18`,
+
+            showData: true,
+          });
+        })
+        .then(() => {
+          axios
+            .get(
+              `http://${process.env.REACT_APP_BACKEND_URL}/weather?lat=${this.state.lat}&lon=${this.state.lon}`
+            )
+            .then((y) => {
+              console.log(y.data);
+              this.setState({
+                weatherData: y.data,
+              });
+            });
+        });
+    }
   };
+
   render() {
     return (
       <div>
         <h1> City Explorer</h1>
+        <br />
+        {this.state.showError && <ErrorAlert />}
+
         <br />
         <SearchForm
           handleLocation={this.handleLocation}
@@ -97,8 +107,8 @@ class App extends Component {
           return (
             <div>
               <p>
-                Date: {item.date} <br />
-                Description: {item.description} <br />
+                <strong> Date:</strong> {item.date} <br />
+                <strong> Description:</strong> {item.description} <br />
               </p>
             </div>
           );
