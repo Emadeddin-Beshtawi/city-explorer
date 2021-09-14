@@ -3,6 +3,7 @@ import React, { Component } from "react";
 ///// We need to import Bootstrap ////////
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 ///// We need to import axios ////////
 import axios from "axios";
 
@@ -20,6 +21,7 @@ class App extends Component {
       lat: "",
       lon: "",
       map: "",
+      weatherData: [],
       showData: false,
     };
   }
@@ -47,18 +49,31 @@ class App extends Component {
 
     ////Axios is a promise based HTTP client for the browser and Node.js.////
 
-    axios(config).then((y) => {
-      const responseData = y.data[0];
-      this.setState({
-        display_name: responseData.display_name,
-        lat: responseData.lat,
-        lon: responseData.lon,
+    axios(config)
+      .then((y) => {
+        const responseData = y.data[0];
+        this.setState({
+          display_name: responseData.display_name,
+          lat: responseData.lat,
+          lon: responseData.lon,
 
-        map: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${responseData.lat},${responseData.lon}&zoom=1-18`,
+          map: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${responseData.lat},${responseData.lon}&zoom=1-18`,
 
-        showData: true,
+          showData: true,
+        });
+      })
+      .then(() => {
+        axios
+          .get(
+            `http://${process.env.REACT_APP_BACKEND_URL}/weather-data?lat=${this.state.lat}&lon=${this.state.lon}`
+          )
+          .then((y) => {
+            console.log(y.data);
+            this.setState({
+              weatherData: y.data,
+            });
+          });
       });
-    });
   };
   render() {
     return (
@@ -78,6 +93,17 @@ class App extends Component {
             map={this.state.map}
           />
         )}
+
+        {this.state.weatherData.map((item) => {
+          return (
+            <div>
+
+              <p>Date: {item.date} <br/>
+              Description: {item.description} <br/></p>
+              
+            </div>
+          );
+        })}
       </div>
     );
   }
