@@ -3,7 +3,6 @@ import React, { Component } from "react";
 ///// We need to import Bootstrap ////////
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 ///// We need to import axios ////////
 import axios from "axios";
 
@@ -97,10 +96,10 @@ class App extends Component {
         {this.state.weatherData.map((item) => {
           return (
             <div>
-
-              <p>Date: {item.date} <br/>
-              Description: {item.description} <br/></p>
-              
+              <p>
+                Date: {item.date} <br />
+                Description: {item.description} <br />
+              </p>
             </div>
           );
         })}
