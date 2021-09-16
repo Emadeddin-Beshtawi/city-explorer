@@ -15,6 +15,8 @@ import Location from "./component/Location";
 ///// We need to import supported ErrorAlert Component ////////
 import ErrorAlert from "./component/ErrorAlert";
 
+import { Image } from "react-bootstrap";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ class App extends Component {
       weatherData: [],
       showData: false,
       showError: false,
+      movieRender: false,
     };
   }
   /////// handle-location function ///////////
@@ -69,12 +72,26 @@ class App extends Component {
         .then(() => {
           axios
             .get(
-              `http://${process.env.REACT_APP_BACKEND_URL}/weather?lat=${this.state.lat}&lon=${this.state.lon}`
+              `http://${process.env.REACT_APP_BACKEND_URL}/weather?lat=${this.state.lat}&lon=${this.state.lon}&key=${process.env.WEATHERBIT_API_KEY}`
             )
             .then((y) => {
               console.log(y.data);
               this.setState({
                 weatherData: y.data,
+              });
+            });
+        })
+
+        .then(() => {
+          axios
+            .get(
+              `http://${process.env.REACT_APP_BACKEND_URL}/movie?api_key=${process.env.MOVIE_API_KEY}&query=${this.state.display_name}`
+            )
+            .then((y) => {
+              console.log(y.data);
+              this.setState({
+                movieInfo: y.data,
+                movieRender: true,
               });
             });
         });
@@ -113,9 +130,39 @@ class App extends Component {
             </div>
           );
         })}
+
+        {this.state.movieRender &&
+          this.state.movieInfo.map((item) => {
+            return (
+              <div>
+                <Image
+                  variant="top"
+                  src={item.poster_path}
+                  alt={item.title}
+                  width="500"
+                  height="1100"
+                />
+                <h2>{item.title}</h2>
+                <h3>Overview:</h3> {item.overview}
+                <br />
+                <h3> Vote_average: </h3>
+                {item.vote_average}
+                <br />
+                <h3> Vote_count: </h3>
+                {item.vote_count}
+                <br />
+                <h3>Popularity:</h3> {item.popularity}
+                <br />
+                <h3> Release_date:</h3> {item.release_date}
+                <br />
+              </div>
+            );
+          })}
       </div>
     );
   }
 }
 
 export default App;
+
+
