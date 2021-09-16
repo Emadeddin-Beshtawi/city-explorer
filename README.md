@@ -3,7 +3,7 @@
 # Author: Emadeddin Beshtawi
 
 # Overview (problem domain)
-As a user exploring countires and cities ,they want to easily access to the map so they can see the layout of the area they wish to explore. this App is built to provide this survice plus the desired area's coordinates just by entering the name of the city/country.
+This App Contains a Form on it's first page so the user can type the name of their wanted city and press on the "Search" button to deliver the map and the exact coordinates (latitude & longitude), live weather, and movies.
 
 # Getting Started
 
@@ -24,9 +24,9 @@ Name of feature: API
 
 **Estimate of time needed to complete: 3**
 
-**Start time: 3**
+**Start time: 4**
 
-**Finish time: 7**
+**Finish time: 8**
 
 **Actual time needed to complete: 4**
 
