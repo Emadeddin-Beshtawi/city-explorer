@@ -13,22 +13,22 @@ This App Contains a Form on it's first page so the user can type the name of the
 * Linking the app with the LocationIQ website to extract the data of the cities/countries from.
 
 # Architecture
-This App Contains a Form on it's first page so the user can type the name of their wanted city/country and press on the "Search" button to deliver the map and the exact coordinates (latitude & longitude).
+This App Contains a Form on it's first page so the user can type the name of their wanted city/country and press on the "Search" button to deliver the map and the exact coordinates (latitude & longitude), weather-forecastings, top-movies.
 
 * Language used : JavaScript/CSS
 * Libraries: React.js /Bootstrap
 
 # Change Log
 
-Name of feature: API
+Name of feature: Refactoring
 
-**Estimate of time needed to complete: 3**
+**Estimate of time needed to complete: 1**
 
-**Start time: 4**
+**Start time: 6**
 
-**Finish time: 8**
+**Finish time: 7:30**
 
-**Actual time needed to complete: 4**
+**Actual time needed to complete: 1.5**
 
 # Getting Started with Create React App
 

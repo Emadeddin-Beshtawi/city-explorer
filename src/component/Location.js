@@ -1,21 +1,32 @@
 import React, { Component } from "react";
+import { Row, Table, Col, Image, Container } from "react-bootstrap";
 
-class Location extends Component {
+export class Location extends Component {
   render() {
     return (
-      <div>
-        <h4>
-          City Name and Address:<u> {this.props.display_name} </u>
-        </h4>
-        <p>
-          {" "}
-          <strong>Latitude:</strong> {this.props.lat} <br />
-          <strong> Longitude:</strong> {this.props.lon}{" "}
-        </p>
-        <div>
-          <img src={this.props.map} alt="Map" className="img-responsive" />
-        </div>
-      </div>
+      <Container>
+        <h4>City Name: {this.props.display_name}</h4>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Latitude</th>
+              <th>Longitude</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{this.props.lat}</td>
+              <td>{this.props.lon}</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        <Row>
+          <Col xs={6} md={4}>
+            <Image src={this.props.map} rounded />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

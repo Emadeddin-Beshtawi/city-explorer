@@ -11,8 +11,11 @@ export class SearchForm extends Component {
             controlId="formBasicEmail"
             onChange={this.props.handleLocation}
           >
-            <Form.Label>Input City Name</Form.Label>
-            <Form.Control type="text" size="lg" placeholder="e.g. Amman" />
+            <Form.Label>
+              {" "}
+              <h6>Input City Name</h6>
+            </Form.Label>
+            <Form.Control type="text" size="lg" placeholder="e.g. Paris" />
           </Form.Group>
         </Form>{" "}
         <br />
